@@ -17,15 +17,17 @@ class GCodeGenerator(QMainWindow):
         
         self.settings = QSettings("GCodeGenerator","GcodeConfig")
         self.settings.setDefaultFormat(QSettings.IniFormat)
-        self.init_settings()
+        
         
         self.materialFile = "millingparameters.json"
         
         self.load_ui()
-        
         self.init_Material()
+        if len(self.settings.allKeys()) > 0:
+            self.init_settings()
         
         self.toolBoxObj = None
+        
         
                 
         self.gcValues = {
@@ -62,24 +64,67 @@ class GCodeGenerator(QMainWindow):
         self.window.actionMaterial.triggered.emit()
         self.window.actionMachine_Params.triggered.emit()
         
-    def load_settings(self):
-        pass
-    
-    def write_settings(self, group, value):
-        pass
+        
+        
+    def write_settings(self):
+        self.settings.setValue("Preamble",self.window.preamble.text())
+        self.settings.setValue("PostGcode",self.window.postGcode.text())
+        self.settings.setValue("Material",self.window.cbMaterial.currentIndex())
+        self.settings.setValue("Materials",self.window.cbMaterials.currentIndex())
+        self.settings.setValue("ToolId",self.window.toolId.text())
+        self.settings.setValue("SpindleSpeed",self.window.spindleSpeed.text())
+        if self.window.dirCCW.isChecked():
+            self.settings.setValue("Direction_CCW",1)
+            self.settings.setValue("Direction_CW",0)
+        elif self.window.dirCW.isChecked():
+            self.settings.setValue("Direction_CW",1)
+            self.settings.setValue("Direction_CCW",0)
+        
+        if self.window.unitMm.isChecked():
+            self.settings.setValue("Unit_mm",1)
+            self.settings.setValue("Unit_inch",0)
+        elif self.window.unitInch.isChecked():
+            self.settings.setValue("Unit_inch",1)
+            self.settings.setValue("Unit_mm",0)
+        
+        self.settings.setValue("Speed_XY",self.window.speedXY.text())
+        self.settings.setValue("Speed_Z",self.window.speedZ.text())
+        self.settings.setValue("ToolDiameter",self.window.toolDiameter.text())
+        self.settings.setValue("StartZ",self.window.startZ.text())
+        self.settings.setValue("SafeZ",self.window.zSafe.text())
+        self.settings.setValue("Speed_G2G3",self.window.speedG2G3.text())
+        self.settings.setValue("Speed_Zg1",self.window.speedZg1.text())
+        self.settings.setValue("Center_X",self.window.centerX.text())
+        self.settings.setValue("Center_Y",self.window.centerY.text())
+        self.settings.setValue("DepthTotal",self.window.depthTotal.text())
+        self.settings.setValue("DepthStep",self.window.depthStep.text())
     
     def init_settings(self):
         #print(self.settings.fileName())
         #print(len(self.settings.allKeys()))
+        self.window.preamble.setText(self.settings.value("Preamble"))
+        self.window.postGcode.setText(self.settings.value("PostGcode"))
+        self.window.cbMaterial.setCurrentIndex(int(self.settings.value("Material")))
+        self.window.cbMaterials.setCurrentIndex(int(self.settings.value("Materials")))
+        self.window.toolId.setText(self.settings.value("ToolId"))
+        self.window.spindleSpeed.setText(self.settings.value("SpindleSpeed"))
+        self.window.dirCCW.setChecked(bool(self.settings.value("Direction_CCW")))
+        self.window.dirCW.setChecked(bool(self.settings.value("Direction_CW")))
+        self.window.unitMm.setChecked(bool(self.settings.value("Unit_mm")))
+        self.window.unitInch.setChecked(bool(self.settings.value("Unit_inch")))
+        self.window.speedXY.setText(self.settings.value("Speed_XY"))
+        self.window.speedZ.setText(self.settings.value("Speed_Z"))
+        self.window.toolDiameter.setText(self.settings.value("ToolDiameter"))
+        self.window.startZ.setText(self.settings.value("StartZ"))
+        self.window.zSafe.setText(self.settings.value("SafeZ"))
+        self.window.speedG2G3.setText(self.settings.value("Speed_G2G3"))
+        self.window.speedZg1.setText(self.settings.value("Speed_Zg1"))
+        self.window.centerX.setText(self.settings.value("Center_X"))
+        self.window.centerY.setText(self.settings.value("Center_Y"))
+        self.window.depthTotal.setText(self.settings.value("DepthTotal"))
+        self.window.depthStep.setText(self.settings.value("DepthStep"))
         
-        if len(self.settings.allKeys()) > 0:
-            ## nothing todo
-            return
-        ## set initial Values
         
-        with open("config.json", "r") as read_file:
-            self.dicSystemConfig = json.load(read_file)
-        pass
 
     def init_Material(self):
         with open(self.materialFile, "r") as read_file:
@@ -168,5 +213,6 @@ class GCodeGenerator(QMainWindow):
 if __name__ == "__main__":
     app = QApplication([])
     widget = GCodeGenerator()
+    app.aboutToQuit.connect(widget.write_settings)
     widget.window.show()
     sys.exit(app.exec_())

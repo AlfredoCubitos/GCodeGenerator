@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>755</width>
+    <width>772</width>
     <height>830</height>
    </rect>
   </property>
@@ -369,7 +369,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="centerY">
+           <widget class="QLineEdit" name="centerX">
             <property name="text">
              <string>0.0</string>
             </property>
@@ -383,7 +383,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="centerX">
+           <widget class="QLineEdit" name="centerY">
             <property name="text">
              <string>0.0</string>
             </property>
@@ -423,7 +423,7 @@
            </rect>
           </property>
           <property name="text">
-           <string>-0.5</string>
+           <string>-1.5</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_18">
@@ -483,8 +483,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>701</width>
-             <height>292</height>
+             <width>602</width>
+             <height>274</height>
             </rect>
            </property>
            <attribute name="label">
@@ -753,9 +753,9 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-155</y>
-             <width>722</width>
-             <height>312</height>
+             <y>0</y>
+             <width>713</width>
+             <height>296</height>
             </rect>
            </property>
            <attribute name="label">
@@ -949,10 +949,10 @@
           <widget class="QWidget" name="page_roundedRectangle">
            <property name="geometry">
             <rect>
-             <x>-84</x>
-             <y>-131</y>
-             <width>785</width>
-             <height>361</height>
+             <x>0</x>
+             <y>0</y>
+             <width>791</width>
+             <height>343</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1188,8 +1188,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>715</width>
-             <height>171</height>
+             <width>740</width>
+             <height>160</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1201,8 +1201,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>715</width>
-             <height>171</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1228,8 +1228,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>701</width>
-             <height>313</height>
+             <width>719</width>
+             <height>303</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1282,7 +1282,11 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QLineEdit" name="stepOver"/>
+                <widget class="QLineEdit" name="stepOver">
+                 <property name="text">
+                  <string>50</string>
+                 </property>
+                </widget>
                </item>
                <item row="0" column="1">
                 <widget class="QLineEdit" name="outerRadius">
@@ -1328,8 +1332,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>791</width>
-             <height>319</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1397,8 +1401,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>755</width>
-     <height>23</height>
+     <width>772</width>
+     <height>30</height>
     </rect>
    </property>
   </widget>
