@@ -60,32 +60,25 @@ class GCodeGenerator(QMainWindow):
         self.window.actionMaterial.triggered.connect(self.onActionMaterial)
         self.window.actionMachine_Params.triggered.connect(self.onActionMachineParams)
         
-        self.window.actionGCode_Pre_Post.triggered.emit()
-        self.window.actionMaterial.triggered.emit()
-        self.window.actionMachine_Params.triggered.emit()
-        
-        
         
     def write_settings(self):
+        boolean = {True:1,False:0}
         self.settings.setValue("Preamble",self.window.preamble.text())
         self.settings.setValue("PostGcode",self.window.postGcode.text())
         self.settings.setValue("Material",self.window.cbMaterial.currentIndex())
         self.settings.setValue("Materials",self.window.cbMaterials.currentIndex())
         self.settings.setValue("ToolId",self.window.toolId.text())
         self.settings.setValue("SpindleSpeed",self.window.spindleSpeed.text())
-        if self.window.dirCCW.isChecked():
-            self.settings.setValue("Direction_CCW",1)
-            self.settings.setValue("Direction_CW",0)
-        elif self.window.dirCW.isChecked():
-            self.settings.setValue("Direction_CW",1)
-            self.settings.setValue("Direction_CCW",0)
+        self.settings.setValue("Direction_CCW",boolean[self.window.dirCCW.isChecked()])
+        self.settings.setValue("Direction_CW", boolean[self.window.dirCW.isChecked()])
         
-        if self.window.unitMm.isChecked():
-            self.settings.setValue("Unit_mm",1)
-            self.settings.setValue("Unit_inch",0)
-        elif self.window.unitInch.isChecked():
-            self.settings.setValue("Unit_inch",1)
-            self.settings.setValue("Unit_mm",0)
+        self.settings.setValue("Unit_mm",boolean[self.window.unitMm.isChecked()])
+        self.settings.setValue("Unit_inch",boolean[self.window.unitInch.isChecked()])
+       
+        
+        self.settings.setValue("ViewGcode",boolean[ self.window.actionGCode_Pre_Post.isChecked()])
+        self.settings.setValue("ViewMaterial",boolean[ self.window.actionMaterial.isChecked()])
+        self.settings.setValue("ViewParams",boolean[ self.window.actionMachine_Params.isChecked()])
         
         self.settings.setValue("Speed_XY",self.window.speedXY.text())
         self.settings.setValue("Speed_Z",self.window.speedZ.text())
@@ -102,16 +95,23 @@ class GCodeGenerator(QMainWindow):
     def init_settings(self):
         #print(self.settings.fileName())
         #print(len(self.settings.allKeys()))
+        self.window.actionGCode_Pre_Post.setChecked(bool(int(self.settings.value("ViewGcode"))))
+        self.window.actionGCode_Pre_Post.triggered.emit()
+        self.window.actionMaterial.setChecked(bool(int(self.settings.value("ViewMaterial"))))
+        self.window.actionMaterial.triggered.emit()
+        self.window.actionMachine_Params.setChecked(bool(int(self.settings.value("ViewParams"))))
+        self.window.actionMachine_Params.triggered.emit()
+        
         self.window.preamble.setText(self.settings.value("Preamble"))
         self.window.postGcode.setText(self.settings.value("PostGcode"))
         self.window.cbMaterial.setCurrentIndex(int(self.settings.value("Material")))
         self.window.cbMaterials.setCurrentIndex(int(self.settings.value("Materials")))
         self.window.toolId.setText(self.settings.value("ToolId"))
         self.window.spindleSpeed.setText(self.settings.value("SpindleSpeed"))
-        self.window.dirCCW.setChecked(bool(self.settings.value("Direction_CCW")))
-        self.window.dirCW.setChecked(bool(self.settings.value("Direction_CW")))
-        self.window.unitMm.setChecked(bool(self.settings.value("Unit_mm")))
-        self.window.unitInch.setChecked(bool(self.settings.value("Unit_inch")))
+        self.window.dirCCW.setChecked(bool(int(self.settings.value("Direction_CCW"))))
+        self.window.dirCW.setChecked(bool(int(self.settings.value("Direction_CW"))))
+        self.window.unitMm.setChecked(bool(int(self.settings.value("Unit_mm"))))
+        self.window.unitInch.setChecked(bool(int(self.settings.value("Unit_inch"))))
         self.window.speedXY.setText(self.settings.value("Speed_XY"))
         self.window.speedZ.setText(self.settings.value("Speed_Z"))
         self.window.toolDiameter.setText(self.settings.value("ToolDiameter"))
@@ -139,25 +139,25 @@ class GCodeGenerator(QMainWindow):
         self.window.cbMaterial.currentIndexChanged.emit(matIdx)
     
     def onActionGCode_Pre_Post(self):
-        if self.window.frame_Gcode.isVisible():
-            self.window.frame_Gcode.hide()
-        else:
+        
+        if self.window.actionGCode_Pre_Post.isChecked():
             self.window.frame_Gcode.show()
+        else:
+            self.window.frame_Gcode.hide()
 
     def onActionMaterial(self):
-        if self.window.frame_Material.isVisible():
-            self.window.frame_Material.hide()
-        else:
+        if self.window.actionMaterial.isChecked():
             self.window.frame_Material.show()
+        else:
+            self.window.frame_Material.hide()
     
     
     def onActionMachineParams(self):
         
-        if self.window.groupBoxDirection.isVisible():
-            self.window.groupBoxDirection.hide()
-            print("machine")
-        else:
+        if self.window.actionMachine_Params.isChecked():
             self.window.groupBoxDirection.show()
+        else:
+            self.window.groupBoxDirection.hide()
         
     #Slot int
     def onTabBarClicked(self,idx):

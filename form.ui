@@ -176,6 +176,9 @@
           </item>
           <item>
            <widget class="QRadioButton" name="unitMm">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="accessibleName">
              <string comment="mm"/>
             </property>
@@ -460,7 +463,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_contour">
        <attribute name="title">
@@ -476,15 +479,15 @@
            <enum>QFrame::Raised</enum>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="page_circleArc">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>602</width>
-             <height>274</height>
+             <width>718</width>
+             <height>292</height>
             </rect>
            </property>
            <attribute name="label">
@@ -754,8 +757,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>713</width>
-             <height>296</height>
+             <width>722</width>
+             <height>312</height>
             </rect>
            </property>
            <attribute name="label">
@@ -951,8 +954,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>791</width>
-             <height>343</height>
+             <width>785</width>
+             <height>361</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1188,8 +1191,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>740</width>
-             <height>160</height>
+             <width>732</width>
+             <height>171</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1201,8 +1204,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>732</width>
+             <height>171</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1228,8 +1231,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>719</width>
-             <height>303</height>
+             <width>718</width>
+             <height>313</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1402,19 +1405,30 @@
      <x>0</x>
      <y>0</y>
      <width>772</width>
-     <height>30</height>
+     <height>23</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuApp">
+    <property name="title">
+     <string>App</string>
+    </property>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionGCode_Pre_Post"/>
+    <addaction name="actionMaterial"/>
+    <addaction name="actionMachine_Params"/>
+   </widget>
+   <addaction name="menuApp"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
-   </property>
-  </action>
-  <action name="actionQuit">
-   <property name="text">
-    <string>Quit</string>
    </property>
   </action>
   <action name="actionGCode_Pre_Post">
@@ -1450,25 +1464,14 @@
     <string>Machine Params</string>
    </property>
   </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
-  <connection>
-   <sender>actionQuit</sender>
-   <signal>triggered()</signal>
-   <receiver>GCodeGenerator</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>pb_cancel</sender>
    <signal>clicked()</signal>
@@ -1482,6 +1485,22 @@
     <hint type="destinationlabel">
      <x>369</x>
      <y>399</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionQuit</sender>
+   <signal>triggered()</signal>
+   <receiver>GCodeGenerator</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>385</x>
+     <y>414</y>
     </hint>
    </hints>
   </connection>

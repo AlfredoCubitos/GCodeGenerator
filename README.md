@@ -13,6 +13,10 @@ This tool is in a very early stage, but it works.
 For documentation have a look at the [wiki](https://github.com/mrRobot62/GCodeGenerator_Geometricals/wiki) of GCodeGenerator_Geometricals
 
 ### New in this release
+View menu implemented.
+Now you can enale/disable parameter views, which may be usefull on devices with small screens
+
+### previous versions
 Using ini-format for storing application parameter
 Before closing the app stores the machine parameters into an ini file
 and restores them when starting next time.
