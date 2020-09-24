@@ -20,7 +20,8 @@ Define an arc with sliders and a preview
 
 View menu implemented.
 Now you can enale/disable parameter views, which may be usefull on devices with small screens
-------
+
+----------
 
 Using ini-format for storing application parameter
 Before closing the app stores the machine parameters into an ini file
