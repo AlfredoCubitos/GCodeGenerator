@@ -1,7 +1,8 @@
 import os
 #from PySide2.QtGui import QPixmap
-from PyQt5.QtGui import QPixmap
-
+from PyQt5.QtGui import QPixmap, QPainter
+from PyQt5 import QtGui
+from PyQt5.QtCore import QBuffer
 
 CR="\n"
 
@@ -32,20 +33,117 @@ class ContourArc():
         self.window.rbCP_4.clicked.connect(lambda clicked: self.onCenterPosChange(3))
         self.window.rbCP_5.clicked.connect(lambda clicked: self.onCenterPosChange(4))
         
+        self.window.rbTrc.clicked.connect(lambda clicked: self.onToolMoveChanged("on"))
+        self.window.rbTrcl.clicked.connect(lambda clicked: self.onToolMoveChanged("left"))
+        self.window.rbTrcr.clicked.connect(lambda clicked: self.onToolMoveChanged("right"))
+        
+        self.window.hSliderArcStart.valueChanged.connect(self.onArcStart)
+        self.window.hSliderArcEnd.valueChanged.connect(self.onArcEnd)
+        
+        self.window.hSliderArcStart.sliderReleased.connect(self.onSliderReleased)
+        self.window.hSliderArcEnd.sliderReleased.connect(self.onSliderReleased)
+        self.arcPix = False
+                
         for i in range(1,6):
             obj = "rbCP_"+str(i)
             attr = getattr(self.window,obj)
             if attr.isChecked():
                 attr.clicked.emit()
         
+        
+        if self.window.rbTrc.isChecked():
+            self.window.rbTrc.clicked.emit()
+        elif self.window.rbTrcl.isChecked():
+            self.window.rbTrcl.clicked.emit()
+        elif self.window.rbTrcr.isChecked():
+            self.window.rbTrcr.clicked.emit()
+        
+        self.buffer = QBuffer()
+        
+       # self.drawArc(40,360)
+        
     def onCenterPosChange(self, pos):
-        pixmap = QPixmap()
-        if pixmap.load(self.__imageNames[pos]):
-            self.window.image.setPixmap(pixmap)
+        self.pixmap = QPixmap()
+        if self.pixmap.load(self.__imageNames[pos]):
+            self.window.image.setPixmap(self.pixmap)
+            self.drawCenterPos(pos)
         else:
             print("Image Load Error ", self.__imageNames[pos])
+    
+    def onToolMoveChanged(self,pos):
+        self.arcPix = False
+        self.window.hSliderArcStart.setValue(0)
+        self.window.hSliderArcEnd.setValue(0)
+        if pos == "on":
+            self.drawMiller(40)
+        elif pos == "right":
+            self.drawMiller(20)
+        elif pos == "left":
+            self.drawMiller(60)
+    
+    def onArcStart(self,value):
+        self.window.arcStart.setText(str(value)+".0")
+    
+    def onArcEnd(self,value):
+        self.window.arcEnd.setText(str(value)+".0")
+    
+    def onSliderReleased(self):
+        arcStart = self.window.hSliderArcStart.value()
+        arcEnd = self.window.hSliderArcEnd.value()
+        self.drawArc(arcStart,arcEnd)
+    
+    def drawDiameter(self):
+        pass
+    
+    def drawCenterPos(self,pos):
+        pen = QtGui.QPen()
+        pen.setWidth(3)
+        pen.setColor(QtGui.QColor('red'))
+        pix = self.pixmap
+        qp = QPainter(pix)
+        qp.setPen(pen)
+ 
+        if pos == 4:
+            xh = pix.width()/2
+            yh = pix.height()/2
+            qp.drawLine(xh-10,yh,xh+10,yh)
+            qp.drawLine(xh,yh-10,xh,yh+10)
+            
+        
+        qp.end()
+        self.window.image.update()   
 
-
+    def drawMiller(self,pos):
+        
+        pen = QtGui.QPen()
+        pen.setWidth(30)
+        pen.setColor(QtGui.QColor('blue'))
+        self.window.image.setPixmap(self.pixmap)
+        pix = self.window.image.pixmap()    
+        qp = QPainter(pix)
+        qp.setPen(pen)
+        qp.drawEllipse(pix.width()-pos,pix.height()/2,4,4)
+        qp.end()
+        self.window.image.update()
+    
+    def drawArc(self,start,end):
+        pen = QtGui.QPen()
+        pen.setWidth(3)
+        pen.setColor(QtGui.QColor('black'))
+        pix = QPixmap()
+        if self.arcPix:
+            pix.loadFromData(self.buffer.data())
+        else:
+            pix = self.window.image.pixmap()
+            self.buffer.open(QBuffer.ReadWrite)
+            pix.save(self.buffer,"PNG")
+            self.arcPix = True
+        qp = QPainter(pix)
+        qp.setPen(pen)
+        qp.drawArc(40,40,pix.width()-80,pix.height()-80,int(start*16),int(end*16))
+        qp.end()
+        self.window.image.setPixmap(pix)
+   
         
     def generateGCode(self,parent):
         gc = ""
