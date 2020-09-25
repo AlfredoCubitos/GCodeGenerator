@@ -13,10 +13,13 @@ This tool is in a very early stage, but it works.
 For documentation have a look at the [wiki](https://github.com/mrRobot62/GCodeGenerator_Geometricals/wiki) of GCodeGenerator_Geometricals
 
 ### New in this release
+Positions reduced to  X/Y- and Center-Position
+New image for X/Y position
+
+### previous versions
 More sophisticated preview for ContourArc, showing tool move position.
 Define an arc with sliders and a preview
 
-### previous versions
 
 View menu implemented.
 Now you can enale/disable parameter views, which may be usefull on devices with small screens
