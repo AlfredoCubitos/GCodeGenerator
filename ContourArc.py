@@ -1,6 +1,6 @@
 import os
-#from PySide2.QtGui import QPixmap
-from PyQt5.QtGui import QPixmap, QPainter
+
+from PyQt5.QtGui import QPixmap, QPainter, QFont
 from PyQt5 import QtGui
 from PyQt5.QtCore import QBuffer
 
@@ -12,26 +12,18 @@ class ContourArc():
         
         path = os.getcwd()
         self.__imageNames = [
-                    # left down
+                    
                     path + "/img/contour/circle-pic1_1.jpg",
-                    # left upper
-                    path + "/img/contour/circle-pic1_2.jpg",
-                    # right upper
-                    path + "/img/contour/circle-pic1_3.jpg",
-                    # right down
-                    path + "/img/contour/circle-pic1_4.jpg",
                     # center
-                    path + "/img/contour/circle-pic1_5.jpg"
+                    path + "/img/contour/circle-pic1_2.jpg"
                 ]
         self.parent = parent
         self.window = parent.window
-        
+        self.buffer = QBuffer()
         ## use lambda to pass extra parameter to the Signal function
+        
         self.window.rbCP_1.clicked.connect(lambda clicked: self.onCenterPosChange(0))
         self.window.rbCP_2.clicked.connect(lambda clicked: self.onCenterPosChange(1))
-        self.window.rbCP_3.clicked.connect(lambda clicked: self.onCenterPosChange(2))
-        self.window.rbCP_4.clicked.connect(lambda clicked: self.onCenterPosChange(3))
-        self.window.rbCP_5.clicked.connect(lambda clicked: self.onCenterPosChange(4))
         
         self.window.rbTrc.clicked.connect(lambda clicked: self.onToolMoveChanged("on"))
         self.window.rbTrcl.clicked.connect(lambda clicked: self.onToolMoveChanged("left"))
@@ -42,14 +34,22 @@ class ContourArc():
         
         self.window.hSliderArcStart.sliderReleased.connect(self.onSliderReleased)
         self.window.hSliderArcEnd.sliderReleased.connect(self.onSliderReleased)
-        self.arcPix = False
+        
                 
-        for i in range(1,6):
+        self.arcPix = False
+        
+        
+        for i in range(1,3):
             obj = "rbCP_"+str(i)
             attr = getattr(self.window,obj)
             if attr.isChecked():
                 attr.clicked.emit()
         
+        self.updateMillTool()
+        
+        
+        
+    def updateMillTool(self):
         
         if self.window.rbTrc.isChecked():
             self.window.rbTrc.clicked.emit()
@@ -57,11 +57,14 @@ class ContourArc():
             self.window.rbTrcl.clicked.emit()
         elif self.window.rbTrcr.isChecked():
             self.window.rbTrcr.clicked.emit()
+    
+    def updatePosForm(self,boolean):
+        self.window.centerX.setEnabled(boolean)
+        self.window.centerY.setEnabled(boolean)
+        self.window.label_X.setEnabled(boolean)
+        self.window.label_Y.setEnabled(boolean)
         
-        self.buffer = QBuffer()
-        
-       # self.drawArc(40,360)
-        
+    
     def onCenterPosChange(self, pos):
         self.pixmap = QPixmap()
         if self.pixmap.load(self.__imageNames[pos]):
@@ -92,8 +95,7 @@ class ContourArc():
         arcEnd = self.window.hSliderArcEnd.value()
         self.drawArc(arcStart,arcEnd)
     
-    def drawDiameter(self):
-        pass
+          
     
     def drawCenterPos(self,pos):
         pen = QtGui.QPen()
@@ -102,16 +104,27 @@ class ContourArc():
         pix = self.pixmap
         qp = QPainter(pix)
         qp.setPen(pen)
+        
+        
+        if pos == 0:
+            xh = 40
+            yh = pix.height() -40
+            qp.drawLine(xh-10,yh,xh+10,yh)
+            qp.drawLine(xh,yh-10,xh,yh+10)
+            self.updatePosForm(True)
  
-        if pos == 4:
+        if pos == 1:
             xh = pix.width()/2
             yh = pix.height()/2
             qp.drawLine(xh-10,yh,xh+10,yh)
             qp.drawLine(xh,yh-10,xh,yh+10)
-            
+            self.updatePosForm(False)
         
         qp.end()
-        self.window.image.update()   
+        self.window.image.update()
+        self.updateMillTool()
+        
+        
 
     def drawMiller(self,pos):
         
@@ -125,6 +138,8 @@ class ContourArc():
         qp.drawEllipse(pix.width()-pos,pix.height()/2,4,4)
         qp.end()
         self.window.image.update()
+        
+        #self.window.image.setPixmap(pix)
     
     def drawArc(self,start,end):
         pen = QtGui.QPen()
