@@ -13,19 +13,20 @@ This tool is in a very early stage, but it works.
 For documentation have a look at the [wiki](https://github.com/mrRobot62/GCodeGenerator_Geometricals/wiki) of GCodeGenerator_Geometricals
 
 ### New in this release
-Positions reduced to  X/Y- and Center-Position
-New image for X/Y position
+Update for RoundedRectangle
 
 ### previous versions
-More sophisticated preview for ContourArc, showing tool move position.
-Define an arc with sliders and a preview
+* Positions reduced to  X/Y- and Center-Position
+* New image for X/Y position
+
+* More sophisticated preview for ContourArc, showing tool move position.
+* Define an arc with sliders and a preview
 
 
-View menu implemented.
-Now you can enale/disable parameter views, which may be usefull on devices with small screens
+* View menu implemented.
+* Now you can enale/disable parameter views, which may be usefull on devices with small screens
 
-----------
 
-Using ini-format for storing application parameter
-Before closing the app stores the machine parameters into an ini file
+* Using ini-format for storing application parameter
+* Before closing the app stores the machine parameters into an ini file
 and restores them when starting next time.

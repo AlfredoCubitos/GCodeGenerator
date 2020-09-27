@@ -14,7 +14,6 @@ class ContourArc():
         self.__imageNames = [
                     
                     path + "/img/contour/circle-pic1_1.jpg",
-                    # center
                     path + "/img/contour/circle-pic1_2.jpg"
                 ]
         self.parent = parent

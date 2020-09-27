@@ -161,6 +161,7 @@ class GCodeGenerator(QMainWindow):
         
     #Slot int
     def onTabBarClicked(self,idx):
+        self.toolBox = None
         if idx == 0:
             from ContourArc import ContourArc
             contourArc = ContourArc(self)

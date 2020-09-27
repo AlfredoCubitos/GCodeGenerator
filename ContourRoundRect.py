@@ -1,7 +1,9 @@
 from math import *
 import os
 
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QPainter, QFont
+from PyQt5 import QtGui
+from PyQt5.QtCore import QBuffer, Qt
 
 CR = "\n"
 
@@ -32,9 +34,7 @@ class ContourRoundRectangle():
             # left down
             path + "/img/contour/round-rectangle-pic1_1.jpg",
             path + "/img/contour/round-rectangle-pic1_2.jpg",
-            path + "/img/contour/round-rectangle-pic1_3.jpg",
-            path + "/img/contour/round-rectangle-pic1_4.jpg",
-            path + "/img/contour/round-rectangle-pic1_5.jpg",
+            
         ]
         
         self.parent = parent
@@ -43,23 +43,121 @@ class ContourRoundRectangle():
         
         self.window.rbCPRR_1.clicked.connect(lambda clicked: self.onCenterPosChange(0))
         self.window.rbCPRR_2.clicked.connect(lambda clicked: self.onCenterPosChange(1))
-        self.window.rbCPRR_3.clicked.connect(lambda clicked: self.onCenterPosChange(2))
-        self.window.rbCPRR_4.clicked.connect(lambda clicked: self.onCenterPosChange(3))
-        self.window.rbCPRR_5.clicked.connect(lambda clicked: self.onCenterPosChange(4))
         
-        for i in range(1,6):
+        self.window.rbTrcRRect.clicked.connect(lambda clicked: self.onToolMoveChanged("on"))
+        self.window.rbTrclRRect.clicked.connect(lambda clicked: self.onToolMoveChanged("left"))
+        self.window.rbTrcrrRect.clicked.connect(lambda clicked: self.onToolMoveChanged("right"))
+        
+        self.window.edgeRadius.editingFinished.connect(self.onEdgeRadiusChanged)
+        
+        self.arcPix = False
+        self.buffer = QBuffer()
+        self.pixmap = QPixmap()
+        
+        for i in range(1,3):
             obj = "rbCPRR_"+str(i)
             attr = getattr(self.window,obj)
             if attr.isChecked():
                 attr.clicked.emit()
+        
+       # self.updateMillTool()
+        self.drawRoundedRect(1.0)
+    
+    def updateMillTool(self):
+        
+        if self.window.rbTrcRRect.isChecked():
+            self.window.rbTrcRRect.clicked.emit()
+        elif self.window.rbTrclRRect.isChecked():
+            self.window.rbTrclRRect.clicked.emit()
+        elif self.window.rbTrcrrRect.isChecked():
+            self.window.rbTrcrrRect.clicked.emit()
+    
+    def updatePosForm(self,boolean):
+        self.window.posRRX.setEnabled(boolean)
+        self.window.posRRY.setEnabled(boolean)
+        self.window.labelRRX.setEnabled(boolean)
+        self.window.labelRRY.setEnabled(boolean)
     
     def onCenterPosChange(self, pos):
-        pixmap = QPixmap()
-        if pixmap.load(self.__imageNames[pos]):
-            self.window.imageRR.setPixmap(pixmap)
-            self.centerPos = pos+1
+        if self.pixmap.load(self.__imageNames[pos]):
+            self.window.imageRR.setPixmap(self.pixmap)
+            self.drawCenterPos(pos)
         else:
             print("Image Load Error ", self.__imageNames[pos])
+    
+    def onToolMoveChanged(self,pos):
+        self.arcPix = False
+        if pos == "on":
+            self.drawMiller(40)
+        elif pos == "right":
+            self.drawMiller(20)
+        elif pos == "left":
+            self.drawMiller(60)
+    
+    def onEdgeRadiusChanged(self):
+        value = self.window.edgeRadius.text()
+        self.drawRoundedRect(float(value))
+    
+    def drawRoundedRect(self,r):
+        pen = QtGui.QPen()
+        pen.setWidth(2)
+        pen.setColor(QtGui.QColor('black'))
+        pix = QPixmap()
+        if self.arcPix:
+            pix.loadFromData(self.buffer.data())
+        else:
+            pix = self.window.imageRR.pixmap()
+            self.buffer.open(QBuffer.ReadWrite)
+            pix.save(self.buffer,"PNG")
+            self.arcPix = True
+        qp = QPainter(pix)
+        qp.setPen(pen)
+        qp.drawRoundedRect(40,78,220,150,r,r)
+        
+        qp.end()
+        self.window.imageRR.setPixmap(pix)
+        self.window.imageRR.update()
+        
+    
+    def drawCenterPos(self,pos):
+        pen = QtGui.QPen()
+        pen.setWidth(3)
+        pen.setColor(QtGui.QColor('red'))
+        pix = QPixmap()
+        pix = self.pixmap
+        qp = QPainter(pix)
+        qp.setPen(pen)
+        
+        if pos == 0:
+            xh = 40
+            yh = pix.height() -40
+            qp.drawLine(xh-10,yh,xh+10,yh)
+            qp.drawLine(xh,yh-10,xh,yh+10)
+            self.updatePosForm(True)
+ 
+        if pos == 1:
+            xh = pix.width()/2
+            yh = pix.height()/2
+            qp.drawLine(xh-10,yh,xh+10,yh)
+            qp.drawLine(xh,yh-10,xh,yh+10)
+            self.updatePosForm(False)
+        
+        qp.end()
+        
+        self.updateMillTool()
+    
+    def drawMiller(self,pos):
+        pen = QtGui.QPen()
+        pen.setWidth(30)
+        pen.setColor(QtGui.QColor('blue'))
+        self.window.imageRR.setPixmap(self.pixmap)
+        pix = self.window.imageRR.pixmap()    
+        qp = QPainter(pix)
+        qp.setPen(pen)
+        qp.drawEllipse(pix.width()-pos,pix.height()/2,4,4)
+        qp.end()
+        self.window.image.update()
+        self.window.edgeRadius.editingFinished.emit()
     #-------------------------------------------------------------
     # here you generate your GCode.
     # some of this code should be used every time.
@@ -71,6 +169,7 @@ class ContourRoundRectangle():
         This class is copied from pocketRoundRectangle. Some unnessesary
         code are removed. Some parts are new (cutter compensation)
         '''
+        print("ContourRoundRect")
         cPoint = (float(self.window.centerX.text()), float(self.window.centerY.text()))
         sizeAB = (float(self.window.heightRA.text()), float(self.window.heightRB.text()))
         radius = float(self.window.edgeRadius.text())
@@ -82,8 +181,8 @@ class ContourRoundRectangle():
         }
 
         depth = (
-            float(self.window.depthTotal.text()),
-            float(self.window.depthStep.text())
+            float(self.window.depthRRTotal.text()),
+            float(self.window.depthRRStep.text())
         )
 
         dir = parent.commonGcode.getDir()

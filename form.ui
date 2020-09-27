@@ -377,13 +377,13 @@
            <enum>QFrame::Raised</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="page_circleArc">
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-28</y>
+             <y>0</y>
              <width>718</width>
              <height>397</height>
             </rect>
@@ -700,7 +700,7 @@
                      <bool>false</bool>
                     </property>
                     <property name="text">
-                     <string>Home X</string>
+                     <string>Position X</string>
                     </property>
                    </widget>
                   </item>
@@ -777,7 +777,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>722</width>
+             <width>724</width>
              <height>312</height>
             </rect>
            </property>
@@ -914,13 +914,6 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="2">
-                   <widget class="QLineEdit" name="heightA">
-                    <property name="text">
-                     <string>0.0</string>
-                    </property>
-                   </widget>
-                  </item>
                   <item row="1" column="0">
                    <widget class="QLabel" name="label_35">
                     <property name="text">
@@ -961,6 +954,13 @@
                     </property>
                    </spacer>
                   </item>
+                  <item row="1" column="1">
+                   <widget class="QLineEdit" name="heightA">
+                    <property name="text">
+                     <string>0.0</string>
+                    </property>
+                   </widget>
+                  </item>
                  </layout>
                 </widget>
                </item>
@@ -974,8 +974,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>785</width>
-             <height>361</height>
+             <width>718</width>
+             <height>392</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1003,20 +1003,20 @@
                   <item>
                    <widget class="QLabel" name="label_19">
                     <property name="text">
-                     <string>Center Pos</string>
+                     <string>Position</string>
                     </property>
                    </widget>
                   </item>
                   <item>
                    <widget class="QRadioButton" name="rbCPRR_1">
                     <property name="enabled">
-                     <bool>false</bool>
+                     <bool>true</bool>
                     </property>
                     <property name="text">
-                     <string notr="true">1</string>
+                     <string notr="true">X / Y</string>
                     </property>
                     <property name="checked">
-                     <bool>false</bool>
+                     <bool>true</bool>
                     </property>
                    </widget>
                   </item>
@@ -1026,40 +1026,13 @@
                      <bool>false</bool>
                     </property>
                     <property name="text">
-                     <string>2</string>
+                     <string>Center</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>false</bool>
                     </property>
                     <property name="checked">
                      <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QRadioButton" name="rbCPRR_3">
-                    <property name="enabled">
-                     <bool>false</bool>
-                    </property>
-                    <property name="text">
-                     <string>3</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QRadioButton" name="rbCPRR_4">
-                    <property name="enabled">
-                     <bool>false</bool>
-                    </property>
-                    <property name="text">
-                     <string>4</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QRadioButton" name="rbCPRR_5">
-                    <property name="text">
-                     <string>5</string>
-                    </property>
-                    <property name="checked">
-                     <bool>true</bool>
                     </property>
                    </widget>
                   </item>
@@ -1075,6 +1048,19 @@
                   <pixmap>img/contour/round-rectangle-pic1_1.jpg</pixmap>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_6">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </widget>
@@ -1103,39 +1089,97 @@
                   <enum>QFrame::Raised</enum>
                  </property>
                  <layout class="QGridLayout" name="gridLayout_4">
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_44">
+                  <item row="3" column="2">
+                   <widget class="QLabel" name="label_22">
                     <property name="text">
-                     <string>Tool move</string>
+                     <string>Step</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="0" column="3">
-                   <widget class="QRadioButton" name="rbTrcrrRect">
-                    <property name="statusTip">
-                     <string>Tool Radius Compensation Right (G42)</string>
-                    </property>
+                  <item row="2" column="0">
+                   <widget class="QLabel" name="label_43">
                     <property name="text">
-                     <string comment="rcr">right</string>
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height &lt;span style=&quot; font-weight:600;&quot;&gt;a&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="4">
-                   <widget class="QLineEdit" name="heightRB">
+                  <item row="3" column="0">
+                   <widget class="QLabel" name="label_20">
                     <property name="text">
-                     <string>100</string>
+                     <string>Depth Total</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="3">
-                   <widget class="QLabel" name="label_38">
+                  <item row="4" column="3">
+                   <widget class="QLineEdit" name="posRRY">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QLineEdit" name="heightRA">
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="text">
-                     <string>Width  b</string>
+                     <string>70</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLineEdit" name="edgeRadius">
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>1.0</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="0">
+                   <widget class="QLabel" name="labelRRX">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="text">
+                     <string>Position X</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="1">
+                   <widget class="QLineEdit" name="depthRRTotal">
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>-1.5</string>
                     </property>
                    </widget>
                   </item>
                   <item row="0" column="2">
                    <widget class="QRadioButton" name="rbTrclRRect">
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="statusTip">
                      <string>Tool Radius Compensation Left (G41)</string>
                     </property>
@@ -1154,38 +1198,31 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="1">
-                   <widget class="QLineEdit" name="heightRA">
+                  <item row="2" column="2">
+                   <widget class="QLabel" name="label_38">
                     <property name="text">
-                     <string>70</string>
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width  &lt;span style=&quot; font-weight:600;&quot;&gt;b&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="0">
-                   <widget class="QLabel" name="label_43">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_44">
                     <property name="text">
-                     <string>Height a</string>
+                     <string>Tool move</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="1">
-                   <widget class="QLineEdit" name="edgeRadius">
+                  <item row="0" column="3">
+                   <widget class="QRadioButton" name="rbTrcrrRect">
+                    <property name="statusTip">
+                     <string>Tool Radius Compensation Right (G42)</string>
+                    </property>
                     <property name="text">
-                     <string>1.0</string>
+                     <string comment="rcr">right</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="0" column="1">
-                   <widget class="QRadioButton" name="rbTrcRRect">
-                    <property name="text">
-                     <string>on</string>
-                    </property>
-                    <property name="checked">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="0">
+                  <item row="5" column="0">
                    <spacer name="verticalSpacer_4">
                     <property name="orientation">
                      <enum>Qt::Vertical</enum>
@@ -1197,6 +1234,65 @@
                      </size>
                     </property>
                    </spacer>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QRadioButton" name="rbTrcRRect">
+                    <property name="text">
+                     <string>on</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="1">
+                   <widget class="QLineEdit" name="posRRX">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>60</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="3">
+                   <widget class="QLineEdit" name="depthRRStep">
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>-0.5</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="3">
+                   <widget class="QLineEdit" name="heightRB">
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>100</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="2">
+                   <widget class="QLabel" name="labelRRY">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="text">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Y&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                   </widget>
                   </item>
                  </layout>
                 </widget>
