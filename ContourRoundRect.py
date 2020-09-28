@@ -172,7 +172,7 @@ class ContourRoundRectangle():
         code are removed. Some parts are new (cutter compensation)
         '''
         print("ContourRoundRect")
-        cPoint = (float(self.window.centerX.text()), float(self.window.centerY.text()))
+        cPoint = (float(self.window.posRRX.text()), float(self.window.posRRY.text()))
         sizeAB = (float(self.window.heightRA.text()), float(self.window.heightRB.text()))
         radius = float(self.window.edgeRadius.text())
         toolDia = float(self.window.toolDiameter.text())
@@ -332,31 +332,35 @@ class ContourRoundRectangle():
         x = cPoint[0]
         y = cPoint[1]
         # sequence to mill a rounded rectangle
-        seq = [
+        seq = []
             #start
-            ("G01", feeds["XYGn"], x, y - offset),
+        seq.append(("G01", feeds["XYGn"], x, y - offset))
             # arc1
             # G02, F X Y I J
-            ("G02", feeds["XYGn"], x - r - offset, y + r, 0.0, r + offset),
+        if r > 0:
+            seq.append(("G02", feeds["XYGn"], x - r - offset, y + r, 0.0, r + offset))
             # vertical to arc2
-            ("G01", feeds["XYGn"], x - r - offset, y + r + h1),
+            
+        seq.append(("G01", feeds["XYGn"], x - r - offset, y + r + h1))
             # arc2
             # G02, F X Y I J
-            ("G02", feeds["XYGn"], x, y + h0 + offset, r + offset, 0.0),
+        if r > 0:
+            seq.append(("G02", feeds["XYGn"], x, y + h0 + offset, r + offset, 0.0))
             # horizontal to arc 3
-            ("G01", feeds["XYGn"], x + w1, y + h0 + offset),
+        seq.append(("G01", feeds["XYGn"], x + w1, y + h0 + offset))
             # arc 3
             # G02, F X Y I J
-            ("G02", feeds["XYGn"], x + w1 + r + offset, y + r + h1, 0.0,
-             -r - offset),
+        if r > 0:
+            seq.append(("G02", feeds["XYGn"], x + w1 + r + offset, y + r + h1, 0.0, -r - offset))
             # vertical to arc 4
-            ("G01", feeds["XYGn"], x + w1 + r + offset, y + r),
+        seq.append(("G01", feeds["XYGn"], x + w1 + r + offset, y + r))
             # arc 4
             # G02, G02, F X Y I J
-            ("G02", feeds["XYGn"], x + w1, y - offset, -r - offset, 0.0),
+        if r > 0:
+            seq.append(("G02", feeds["XYGn"], x + w1, y - offset, -r - offset, 0.0))
             # go back to start position
-            ("G01", feeds["XYGn"], x, y - offset),
-        ]
+        seq.append(("G01", feeds["XYGn"], x, y - offset))
+        
         #print "{1}---- offset {0} -----".format(offset,CR)
         #print (seq)
         return seq
