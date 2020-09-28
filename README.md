@@ -13,10 +13,15 @@ This tool is in a very early stage, but it works.
 For documentation have a look at the [wiki](https://github.com/mrRobot62/GCodeGenerator_Geometricals/wiki) of GCodeGenerator_Geometricals
 
 ### New in this release
-Update for RoundedRectangle
+RoundedRectangle and Rectangle merged. Only one tab for both.
+
+RoundedRectangle tab removed
 
 ### previous versions
+* Update for RoundedRectangle
+
 * Positions reduced to  X/Y- and Center-Position
+
 * New image for X/Y position
 
 * More sophisticated preview for ContourArc, showing tool move position.

@@ -36,7 +36,8 @@ class ContourArc():
         
                 
         self.arcPix = False
-        
+        self.pixmap = QPixmap()
+        self.painter = QPainter()
         
         for i in range(1,3):
             obj = "rbCP_"+str(i)
@@ -65,7 +66,6 @@ class ContourArc():
         
     
     def onCenterPosChange(self, pos):
-        self.pixmap = QPixmap()
         if self.pixmap.load(self.__imageNames[pos]):
             self.window.image.setPixmap(self.pixmap)
             self.drawCenterPos(pos)
@@ -101,25 +101,25 @@ class ContourArc():
         pen.setWidth(3)
         pen.setColor(QtGui.QColor('red'))
         pix = self.pixmap
-        qp = QPainter(pix)
-        qp.setPen(pen)
+        self.painter.begin(pix)
+        self.painter.setPen(pen)
         
         
         if pos == 0:
             xh = 40
             yh = pix.height() -40
-            qp.drawLine(xh-10,yh,xh+10,yh)
-            qp.drawLine(xh,yh-10,xh,yh+10)
+            self.painter.drawLine(xh-10,yh,xh+10,yh)
+            self.painter.drawLine(xh,yh-10,xh,yh+10)
             self.updatePosForm(True)
  
         if pos == 1:
             xh = pix.width()/2
             yh = pix.height()/2
-            qp.drawLine(xh-10,yh,xh+10,yh)
-            qp.drawLine(xh,yh-10,xh,yh+10)
+            self.painter.drawLine(xh-10,yh,xh+10,yh)
+            self.painter.drawLine(xh,yh-10,xh,yh+10)
             self.updatePosForm(False)
         
-        qp.end()
+        self.painter.end()
         self.window.image.update()
         self.updateMillTool()
         
@@ -132,10 +132,10 @@ class ContourArc():
         pen.setColor(QtGui.QColor('blue'))
         self.window.image.setPixmap(self.pixmap)
         pix = self.window.image.pixmap()    
-        qp = QPainter(pix)
-        qp.setPen(pen)
-        qp.drawEllipse(pix.width()-pos,pix.height()/2,4,4)
-        qp.end()
+        self.painter.begin(pix)
+        self.painter.setPen(pen)
+        self.painter.drawEllipse(pix.width()-pos,pix.height()/2,4,4)
+        self.painter.end()
         self.window.image.update()
         
         #self.window.image.setPixmap(pix)
@@ -152,10 +152,10 @@ class ContourArc():
             self.buffer.open(QBuffer.ReadWrite)
             pix.save(self.buffer,"PNG")
             self.arcPix = True
-        qp = QPainter(pix)
-        qp.setPen(pen)
-        qp.drawArc(40,40,pix.width()-80,pix.height()-80,int(start*16),int(end*16))
-        qp.end()
+        self.painter.begin(pix)
+        self.painter.setPen(pen)
+        self.painter.drawArc(40,40,pix.width()-80,pix.height()-80,int(start*16),int(end*16))
+        self.painter.end()
         self.window.image.setPixmap(pix)
    
         

@@ -38,6 +38,7 @@ class GCodeGenerator(QMainWindow):
             'trc' : 'G40',    #Tool Radius Compensation on (disables G41/G42)
             }
         
+        self.window.toolBox.setCurrentIndex(0)
         self.window.toolBox.currentChanged.connect(self.onTabBarClicked)
         tbIdx = self.window.toolBox.currentIndex()
         self.window.toolBox.currentChanged.emit(tbIdx)
@@ -47,6 +48,8 @@ class GCodeGenerator(QMainWindow):
         
         self.window.toolBox_Pocket.currentChanged.connect(self.onPocketToolChanged)
         self.window.toolBox_Pocket.currentChanged.emit(0)
+        
+        
 
     def load_ui(self):
         #loader = QUiLoader()
@@ -167,10 +170,6 @@ class GCodeGenerator(QMainWindow):
             contourArc = ContourArc(self)
             self.toolBoxObj = contourArc
         elif idx == 1:
-            from ContourRect import ContourRectangle
-            contourRect = ContourRectangle(self)
-            self.toolBoxObj = contourRect
-        elif idx == 2:
             from ContourRoundRect import ContourRoundRectangle
             contourRRect = ContourRoundRectangle(self)
             self.toolBoxObj = contourRRect

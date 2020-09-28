@@ -53,6 +53,7 @@ class ContourRoundRectangle():
         self.arcPix = False
         self.buffer = QBuffer()
         self.pixmap = QPixmap()
+        self.painter = QPainter()
         
         for i in range(1,3):
             obj = "rbCPRR_"+str(i)
@@ -60,7 +61,7 @@ class ContourRoundRectangle():
             if attr.isChecked():
                 attr.clicked.emit()
         
-       # self.updateMillTool()
+        self.updateMillTool()
         self.drawRoundedRect(1.0)
     
     def updateMillTool(self):
@@ -110,13 +111,13 @@ class ContourRoundRectangle():
             self.buffer.open(QBuffer.ReadWrite)
             pix.save(self.buffer,"PNG")
             self.arcPix = True
-        qp = QPainter(pix)
-        qp.setPen(pen)
-        qp.drawRoundedRect(40,78,220,150,r,r)
+        self.painter.begin(pix)
+        self.painter.setPen(pen)
+        self.painter.drawRoundedRect(40,78,220,150,r,r)
         
-        qp.end()
+        self.painter.end()
         self.window.imageRR.setPixmap(pix)
-        self.window.imageRR.update()
+       # self.window.imageRR.update()
         
     
     def drawCenterPos(self,pos):
@@ -125,24 +126,25 @@ class ContourRoundRectangle():
         pen.setColor(QtGui.QColor('red'))
         pix = QPixmap()
         pix = self.pixmap
-        qp = QPainter(pix)
-        qp.setPen(pen)
+        self.painter.begin(pix)
+        
+        self.painter.setPen(pen)
         
         if pos == 0:
             xh = 40
             yh = pix.height() -40
-            qp.drawLine(xh-10,yh,xh+10,yh)
-            qp.drawLine(xh,yh-10,xh,yh+10)
+            self.painter.drawLine(xh-10,yh,xh+10,yh)
+            self.painter.drawLine(xh,yh-10,xh,yh+10)
             self.updatePosForm(True)
  
         if pos == 1:
             xh = pix.width()/2
             yh = pix.height()/2
-            qp.drawLine(xh-10,yh,xh+10,yh)
-            qp.drawLine(xh,yh-10,xh,yh+10)
+            self.painter.drawLine(xh-10,yh,xh+10,yh)
+            self.painter.drawLine(xh,yh-10,xh,yh+10)
             self.updatePosForm(False)
         
-        qp.end()
+        self.painter.end()
         
         self.updateMillTool()
     
@@ -152,10 +154,10 @@ class ContourRoundRectangle():
         pen.setColor(QtGui.QColor('blue'))
         self.window.imageRR.setPixmap(self.pixmap)
         pix = self.window.imageRR.pixmap()    
-        qp = QPainter(pix)
-        qp.setPen(pen)
-        qp.drawEllipse(pix.width()-pos,pix.height()/2,4,4)
-        qp.end()
+        self.painter.begin(pix)
+        self.painter.setPen(pen)
+        self.painter.drawEllipse(pix.width()-pos,pix.height()/2,4,4)
+        self.painter.end()
         self.window.image.update()
         self.window.edgeRadius.editingFinished.emit()
     #-------------------------------------------------------------
